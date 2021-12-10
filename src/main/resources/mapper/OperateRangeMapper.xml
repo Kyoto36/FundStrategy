@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ls.fundstrategy.mapper.OperateRangeMapper">
+    <select id="findAll" resultType="com.ls.fundstrategy.model.database.OperateRange">
+        SELECT * FROM operate_range
+    </select>
+
+    <update id="updateRange" parameterType="com.ls.fundstrategy.model.database.OperateRange">
+        UPDATE operate_range SET
+         range_sort = #{rangeSort},upper_limit = #{upperLimit},lower_limit = #{lowerLimit},lower_rate = #{lowerRate},belong_to_fund = #{belongToFund}
+            WHERE range_id = #{rangeId}
+    </update>
+
+    <select id="copyRangeTo" statementType="CALLABLE" parameterType="com.ls.fundstrategy.model.database.CopyRangeToParam">
+        {
+            CALL copy_range_to(
+                #{sourceFundId,mode=IN,jdbcType=INTEGER},
+                #{targetFundId,mode=IN,jdbcType=INTEGER},
+                #{state,mode=OUT,jdbcType=INTEGER}
+                )
+        }
+    </select>
+</mapper>
