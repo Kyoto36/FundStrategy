@@ -30,14 +30,53 @@ public class OperateRangeController {
     }
 
     /**
-     * 新增和修改区间
-     * @param operateRange
+     * 新增区间
+     * @param upperLimit
+     * @param lowerLimit
+     * @param lowerRate
+     * @param belongToFund
+     * TODO 基金不存在怎么返回
      * @return
      */
-    @PostMapping("/range")
-    public ApiResponse<Boolean> range(@RequestBody OperateRange operateRange){
-        return ApiResponse.success(mOperateRangeService.range(operateRange));
+    @PostMapping("/addRange")
+    public ApiResponse<Boolean> addRange(
+            @RequestParam("upperLimit") Double upperLimit,
+            @RequestParam("lowerLimit") Double lowerLimit,
+            @RequestParam("lowerRate") Float lowerRate,
+            @RequestParam(name = "belongToFund",required = false) Integer belongToFund){
+        return mOperateRangeService.addRange(upperLimit, lowerLimit, lowerRate, belongToFund);
     }
+
+    /**
+     * 更新区间
+     * @param rangeId
+     * @param upperLimit
+     * @param lowerLimit
+     * @param lowerRate
+     * @param belongToFund
+     * TODO 基金不存在怎么返回
+     * @return
+     */
+    @PostMapping("/updateRange")
+    public ApiResponse<Boolean> updateRange(
+            @RequestParam("rangeId") Integer rangeId,
+            @RequestParam("upperLimit") Double upperLimit,
+            @RequestParam("lowerLimit") Double lowerLimit,
+            @RequestParam("lowerRate") Float lowerRate,
+            @RequestParam(name = "belongToFund",required = false) Integer belongToFund){
+        return mOperateRangeService.updateRange(rangeId, upperLimit, lowerLimit, lowerRate, belongToFund);
+    }
+
+    /**
+     * 删除区间
+     * @param rangeId
+     * @return
+     */
+    @DeleteMapping("/deleteRange")
+    public ApiResponse<Boolean> deleteRange(@RequestParam("rangeId") Integer rangeId){
+        return mOperateRangeService.deleteRange(rangeId);
+    }
+
 
     /**
      * 拷贝一个基金下的区间规则到另一个基金下
@@ -47,8 +86,10 @@ public class OperateRangeController {
      * @return
      */
     @PostMapping("/copyRangeTo")
-    public ApiResponse<Boolean> copyRangeTo(@RequestParam(required = false) Integer sourceFundId,@RequestParam Integer targetFundId){
-        return ApiResponse.success(mOperateRangeService.copyRangeTo(sourceFundId,targetFundId));
+    public ApiResponse<Boolean> copyRangeTo(
+            @RequestParam(name = "sourceFundId",required = false) Integer sourceFundId,
+            @RequestParam("targetFundId") Integer targetFundId){
+        return mOperateRangeService.copyRangeTo(sourceFundId,targetFundId);
     }
 
 }

@@ -12,7 +12,17 @@ public interface OperateRangeMapper extends BaseMapper<OperateRange> {
 
     List<OperateRange> findAll();
 
+    int getHighestSortByNull();
+
+    int getHighestSortByFundId(int fundId);
+
+    Integer getBelongToFundById(int rangeId);
+
+    int existsRangeById(int rangeId);
+
     int updateRange(OperateRange operateRange);
+
+    int deleteRange(int rangeId);
 
     void copyRangeTo(CopyRangeToParam copyRangeToParam);
 
