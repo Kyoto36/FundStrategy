@@ -5,7 +5,9 @@ import com.ls.fundstrategy.model.database.CopyRangeToParam;
 import com.ls.fundstrategy.model.database.OperateRange;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OperateRangeMapper extends BaseMapper<OperateRange> {
@@ -23,5 +25,7 @@ public interface OperateRangeMapper extends BaseMapper<OperateRange> {
     int deleteRange(int rangeId);
 
     void copyRangeTo(CopyRangeToParam copyRangeToParam);
+
+    void testInsert(int aaa);
 
 }

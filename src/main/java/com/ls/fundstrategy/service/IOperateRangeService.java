@@ -26,4 +26,10 @@ public interface IOperateRangeService {
 
     ApiResponse<Boolean> idSort(String idSort,Integer fundId);
 
+    void noTransactional(int aaa);
+
+    void transactional(int aaa);
+
+    void testInsert(int aaa);
+
 }

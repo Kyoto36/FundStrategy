@@ -106,4 +106,13 @@ public class OperateRangeController {
         return mOperateRangeService.idSort(idSort, fundId);
     }
 
+    @GetMapping("/test")
+    public ApiResponse<String> test(){
+        System.out.println("-------------------------------------------------transactional-------------------------------------------------------------------------");
+        mOperateRangeService.transactional(1000);
+        System.out.println("-------------------------------------------------no transactional-------------------------------------------------------------------------");
+        mOperateRangeService.noTransactional(1000);
+        return ApiResponse.success("");
+    }
+
 }

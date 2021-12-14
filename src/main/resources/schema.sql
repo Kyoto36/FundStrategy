@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS `my_funds` DEFAULT CHARSET utf8 COLLATE utf8_gener
 
 USE `my_funds`;
 
+DROP TABLE IF EXISTS `operate_range`;
 CREATE TABLE IF NOT EXISTS `operate_range`(
    `range_id` INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
    `range_sort` INT NOT NULL COMMENT '排序，每次基金赎回，操作区间就会加1，然后就会根据区间找到对应的排序',
@@ -43,6 +44,8 @@ CREATE TABLE IF NOT EXISTS `operate_log`(
 
 SELECT * FROM `hold_funds`;
 
+SELECT COUNT(1) FROM `operate_range`;
+
 CREATE PROCEDURE `fund_range_sort`
 
 DROP PROCEDURE copy_range_to;
@@ -78,3 +81,15 @@ END
 
 CALL `copy_range_to`(NULL,1,@state);
 SELECT @state;
+
+DROP PROCEDURE `test_insert`;
+CREATE PROCEDURE `test_insert`(IN aaa INT)
+BEGIN
+DECLARE i INT DEFAULT 0;
+WHILE i < aaa DO
+INSERT INTO `operate_range` VALUES(NULL,1,0.2,0.05,2,1);
+SET i = i + 1;
+END WHILE;
+END
+
+CALL test_insert(1,NULL,@state);

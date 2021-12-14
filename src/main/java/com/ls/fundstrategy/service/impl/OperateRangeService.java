@@ -10,6 +10,7 @@ import com.ls.fundstrategy.model.response.FundOperateRange;
 import com.ls.fundstrategy.service.IOperateRangeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -118,5 +119,31 @@ public class OperateRangeService implements IOperateRangeService {
         return null;
     }
 
+    @Override
+    public void noTransactional(int aaa) {
+        exec(aaa);
+    }
 
+    @Override
+    @Transactional
+    public void transactional(int aaa) {
+        exec(aaa);
+    }
+
+    private void exec(int aaa){
+        OperateRange range;
+        for (int i = 0; i < aaa; i++){
+            range = new OperateRange();
+            range.setRangeSort(1);
+            range.setUpperLimit((double) i);
+            range.setLowerLimit(i * 0.01);
+            range.setLowerRate((float) i);
+            mOperateRangeMapper.insert(range);
+        }
+    }
+
+    @Override
+    public void testInsert(int aaa) {
+        mOperateRangeMapper.testInsert(aaa);
+    }
 }
