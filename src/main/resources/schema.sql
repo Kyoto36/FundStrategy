@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `operate_range`(
    `upper_limit` DOUBLE COMMENT '可操作上限，基金涨幅大于等于多少时，可赎回',
    `lower_limit` DOUBLE COMMENT '可操作下限，基金跌幅大于等于多少时，可加仓',
    `lower_rate` FLOAT COMMENT '操作下限比率，基金跌幅大于等于下限时，应该按几倍跌幅加仓',
-   `belong_to_fund` INT COMMENT '多属于某只基金的操作区间，为空表示全部适用'
+   `belong_to_fund` INT COMMENT '多属于某只基金的操作区间，为空表示全部适用' DEFAULT -1
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '基金操作区间表';
 
 CREATE TABLE IF NOT EXISTS `hold_funds`(
@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `hold_funds`(
     `init_value` DECIMAL(10,4) NOT NULL COMMENT '初始净值，即加入该条数据时的净值',
     `hold_value` DECIMAL(10,4) NOT NULL COMMENT '持有净值，每次买入卖出会动态变化',
     `operate_range` INT COMMENT '每一次赎回区间加1',
-    `last_opeate_value` DECIMAL(10,4) COMMENT '上次操作净值，为空即未操作',
+    `last_operate_value` DECIMAL(10,4) COMMENT '上次操作净值，为空即未操作',
     `current_value` DECIMAL(10,4) COMMENT '基金当前的最新净值',
-    `hold_count` INT COMMENT '该基金当前持有份额'
+    `hold_count` DOUBLE COMMENT '该基金当前持有份额'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '持有基金表';
 
 CREATE TABLE IF NOT EXISTS `operate_log`(
@@ -41,6 +41,10 @@ CREATE TABLE IF NOT EXISTS `operate_log`(
     `operate_status` INT NOT NULL COMMENT '操作状态 1、定格中，2、已废弃，3、已完成'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '操作日志表';
 
+SELECT * FROM `hold_funds`;
+
+CREATE PROCEDURE `fund_range_sort`
+
 DROP PROCEDURE copy_range_to;
 
 CREATE PROCEDURE `copy_range_to`(IN source_id INT,IN target_id INT,OUT state INT)
@@ -54,13 +58,12 @@ END IF;
 DROP TABLE IF EXISTS `temp_table_copy_range_to`;
 
 IF source_id IS NULL THEN
-    CREATE TEMPORARY TABLE `temp_table_copy_range_to` AS
-    SELECT * FROM `operate_range` WHERE `belong_to_fund` IS NULL;
-ELSE
-    CREATE TEMPORARY TABLE `temp_table_copy_range_to` AS
-    SELECT * FROM `operate_range` WHERE `belong_to_fund` = source_id;
+    SET source_id = -1;
 END IF;
 
+CREATE TEMPORARY TABLE `temp_table_copy_range_to` AS
+SELECT * FROM `operate_range` WHERE `belong_to_fund` = source_id;
+		
 UPDATE `temp_table_copy_range_to` set `belong_to_fund` = target_id;
 
 INSERT INTO `operate_range`
@@ -72,3 +75,6 @@ DROP TABLE `temp_table_copy_range_to`;
 
 SET state = 1;
 END
+
+CALL `copy_range_to`(NULL,1,@state);
+SELECT @state;

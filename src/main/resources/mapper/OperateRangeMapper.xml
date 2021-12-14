@@ -11,10 +11,6 @@
         SELECT `range_sort` FROM `operate_range` WHERE `belong_to_fund` = #{fundId} ORDER BY `range_sort` DESC LIMIT 1;
     </select>
 
-    <select id="getHighestSortByNull" resultType="int">
-        SELECT `range_sort` FROM `operate_range` WHERE `belong_to_fund` IS NULL ORDER BY `range_sort` DESC LIMIT 1;
-    </select>
-
     <select id="getBelongToFundById" resultType="integer" parameterType="int">
         SELECT `belong_to_fund` FROM `operate_range` WHERE `range_id` = #{rangeId};
     </select>

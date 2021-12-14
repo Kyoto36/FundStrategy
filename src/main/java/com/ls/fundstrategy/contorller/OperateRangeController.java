@@ -2,6 +2,7 @@ package com.ls.fundstrategy.contorller;
 
 import com.ls.fundstrategy.model.response.ApiResponse;
 import com.ls.fundstrategy.model.database.OperateRange;
+import com.ls.fundstrategy.model.response.FundOperateRange;
 import com.ls.fundstrategy.service.IOperateRangeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class OperateRangeController {
      * @return
      */
     @GetMapping("/getAll")
-    public ApiResponse<List<OperateRange>> getAll(){
-        return ApiResponse.success(mOperateRangeService.getAll());
+    public ApiResponse<List<FundOperateRange>> getAll(){
+        return mOperateRangeService.getAll();
     }
 
     /**
@@ -90,6 +91,19 @@ public class OperateRangeController {
             @RequestParam(name = "sourceFundId",required = false) Integer sourceFundId,
             @RequestParam("targetFundId") Integer targetFundId){
         return mOperateRangeService.copyRangeTo(sourceFundId,targetFundId);
+    }
+
+    /**
+     * 基金内区间排序
+     * @param idSort
+     * @param fundId
+     * @return
+     */
+    @PostMapping("/sortRange")
+    public ApiResponse<Boolean> sortRange(
+            @RequestParam("idSort") String idSort,
+            @RequestParam("fundId") Integer fundId){
+        return mOperateRangeService.idSort(idSort, fundId);
     }
 
 }
