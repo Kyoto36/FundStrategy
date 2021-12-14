@@ -14,8 +14,6 @@ import java.util.Map;
  * @date 2021-12-11
  * @desc 拦截错误，返回统一json格式
  */
-@Component
-@Slf4j
 public class CustomErrorAttributes extends DefaultErrorAttributes {
 
     @Override

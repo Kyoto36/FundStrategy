@@ -41,6 +41,41 @@ CREATE TABLE IF NOT EXISTS `operate_log`(
     `operate_status` INT NOT NULL COMMENT '操作状态 1、定格中，2、已废弃，3、已完成'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '操作日志表';
 
+DROP TABLE IF EXISTS `t_user`;
+CREATE TABLE `t_user`  (
+                           `USER_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+                           `USER_NAME` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
+                           `CELL_PHONE` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
+                           `EMAIL` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+                           `PASSWORD` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
+                           `USER_STATUS` int(11) NULL DEFAULT NULL COMMENT '状态',
+                           `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+                           `UPDATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+                           PRIMARY KEY (`USER_ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+DROP TABLE IF EXISTS `t_sys_operate_log`;
+CREATE TABLE `t_sys_operate_log`  (
+                                      `ID` int(11) NOT NULL AUTO_INCREMENT,
+                                      `REQUEST_IP` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求IP',
+                                      `REQUEST_URI` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求链接',
+                                      `REQUEST_PARAMS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求参数',
+                                      `HTTP_METHOD` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求方式（GET、POST……）',
+                                      `TYPE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作类型',
+                                      `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求描述',
+                                      `EX_DESC` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '异常描述',
+                                      `EX_DETAIL` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '异常详情',
+                                      `START_TIME` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
+                                      `FINISH_TIME` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
+                                      `CONSUMING_TIME` bigint(20) NULL DEFAULT NULL COMMENT '操作耗时',
+                                      `STATE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作状态（1：成功，0：失败）',
+                                      PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 DROP PROCEDURE copy_range_to;
 
 CREATE PROCEDURE `copy_range_to`(IN source_id INT,IN target_id INT,OUT state INT)

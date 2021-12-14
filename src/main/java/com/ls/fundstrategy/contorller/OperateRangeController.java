@@ -1,5 +1,7 @@
 package com.ls.fundstrategy.contorller;
 
+import com.ls.fundstrategy.common.annotation.SysLog;
+import com.ls.fundstrategy.common.constant.BusinessType;
 import com.ls.fundstrategy.model.response.ApiResponse;
 import com.ls.fundstrategy.model.database.OperateRange;
 import com.ls.fundstrategy.service.IOperateRangeService;
@@ -92,4 +94,10 @@ public class OperateRangeController {
         return mOperateRangeService.copyRangeTo(sourceFundId,targetFundId);
     }
 
+    @GetMapping("test")
+    @SysLog(des = "测试操作", businessType = BusinessType.OTHER)
+    public ApiResponse<Boolean> test()throws Exception{
+        System.out.println("测试");
+        throw new RuntimeException("操作失败");
+    }
 }
