@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `operate_range`(
    `belong_to_fund` INT COMMENT '多属于某只基金的操作区间，为空表示全部适用' DEFAULT -1
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '基金操作区间表';
 
+DROP TABLE IF EXISTS `hold_funds`;
 CREATE TABLE IF NOT EXISTS `hold_funds`(
     `fund_id` INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键id',
     `fund_code` VARCHAR(50) NOT NULL COMMENT '基金code',
@@ -24,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `hold_funds`(
     `hold_count` DOUBLE COMMENT '该基金当前持有份额'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '持有基金表';
 
+DROP TABLE IF EXISTS `operate_log`;
 CREATE TABLE IF NOT EXISTS `operate_log`(
     `operate_id` INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
     `fund_id` INT NOT NULL COMMENT '基金ID',
@@ -42,13 +44,15 @@ CREATE TABLE IF NOT EXISTS `operate_log`(
     `operate_status` INT NOT NULL COMMENT '操作状态 1、定格中，2、已废弃，3、已完成'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '操作日志表';
 
+SELECT * FROM `operate_range`;
 SELECT * FROM `hold_funds`;
+SELECT * FROM `operate_log`;
 
 SELECT COUNT(1) FROM `operate_range`;
 
 CREATE PROCEDURE `fund_range_sort`
 
-DROP PROCEDURE copy_range_to;
+DROP PROCEDURE IF EXISTS `copy_range_to`;
 
 CREATE PROCEDURE `copy_range_to`(IN source_id INT,IN target_id INT,OUT state INT)
 top:BEGIN
@@ -82,7 +86,7 @@ END
 CALL `copy_range_to`(NULL,1,@state);
 SELECT @state;
 
-DROP PROCEDURE `test_insert`;
+DROP PROCEDURE IF EXISTS `test_insert`;
 CREATE PROCEDURE `test_insert`(IN aaa INT)
 BEGIN
 DECLARE i INT DEFAULT 0;

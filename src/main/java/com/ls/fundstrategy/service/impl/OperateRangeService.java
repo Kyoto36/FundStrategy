@@ -22,6 +22,14 @@ public class OperateRangeService implements IOperateRangeService {
     private OperateRangeMapper mOperateRangeMapper;
     private HoldFundsMapper mHoldFundsMapper;
 
+    private Map<Integer,HoldFunds> getFundMap(List<HoldFunds> funds){
+        Map<Integer,HoldFunds> fundMap = new HashMap<>();
+        funds.forEach(fund -> {
+            fundMap.put(fund.getFundId(),fund);
+        });
+        return fundMap;
+    }
+
     @Override
     public ApiResponse<List<FundOperateRange>> getAll() {
         List<OperateRange> operateRanges = mOperateRangeMapper.findAll();
@@ -31,11 +39,7 @@ public class OperateRangeService implements IOperateRangeService {
             return ApiResponse.success(fundOperateRanges);
         }
 
-        List<HoldFunds> funds = mHoldFundsMapper.getFundsByIds(new ArrayList<>(map.keySet()));
-        Map<Integer,HoldFunds> fundMap = new HashMap<>();
-        funds.forEach(fund -> {
-            fundMap.put(fund.getFundId(),fund);
-        });
+        Map<Integer,HoldFunds> fundMap = getFundMap(mHoldFundsMapper.getFundsByIds(new ArrayList<>(map.keySet())));
 
         map.keySet().forEach(key -> {
             FundOperateRange fundOperateRange = new FundOperateRange();
@@ -114,8 +118,13 @@ public class OperateRangeService implements IOperateRangeService {
         return ApiResponse.success(param.getState() == 1);
     }
 
+    @Transactional
     @Override
     public ApiResponse<Boolean> idSort(String idSort, Integer fundId) {
+        String[] idStrs = idSort.split(",");
+        List<Integer> ids = Arrays.stream(idStrs).map(Integer::parseInt).collect(Collectors.toList());
+        Map<Integer,HoldFunds> fundMap = getFundMap(mHoldFundsMapper.selectBatchIds(ids));
+
         return null;
     }
 
