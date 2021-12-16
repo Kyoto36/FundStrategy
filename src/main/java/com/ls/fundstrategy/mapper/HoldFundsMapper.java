@@ -16,5 +16,7 @@ public interface HoldFundsMapper extends BaseMapper<HoldFunds> {
 
     List<HoldFunds> findAll();
 
+    int existsFundByCode(String code);
+
     List<HoldFunds> getFundsByIds(List<Integer> ids);
 }

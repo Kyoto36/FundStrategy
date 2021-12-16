@@ -16,4 +16,18 @@ public class ApiResponse<T> {
         result.data = data;
         return result;
     }
+
+    public static <T> ApiResponse<T> fail(String msg){
+        ApiResponse<T> result = new ApiResponse<>();
+        result.code = ResultConstant.Code.FAIL;
+        result.msg = msg;
+        return result;
+    }
+
+    public static <T> ApiResponse<T> fail(int code,String msg){
+        ApiResponse<T> result = new ApiResponse<>();
+        result.code = code;
+        result.msg = msg;
+        return result;
+    }
 }

@@ -5,6 +5,10 @@
         SELECT * FROM `hold_funds`;
     </select>
 
+    <select id="existsFundByCode" resultType="int" parameterType="string">
+        SELECT COUNT(1) FROM `hold_funds` WHERE `fund_code` = #{code}
+    </select>
+
     <select id="getFundsByIds" resultType="com.ls.fundstrategy.model.database.HoldFunds">
         SELECT * FROM `hold_funds` WHERE `fund_id` IN
         <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">

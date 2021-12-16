@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `operate_range`(
 DROP TABLE IF EXISTS `hold_funds`;
 CREATE TABLE IF NOT EXISTS `hold_funds`(
     `fund_id` INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键id',
-    `fund_code` VARCHAR(50) NOT NULL COMMENT '基金code',
+    `fund_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '基金code',
     `fund_name` VARCHAR(200) NOT NULL COMMENT '基金名称',
     `init_value` DECIMAL(10,4) NOT NULL COMMENT '初始净值，即加入该条数据时的净值',
     `hold_value` DECIMAL(10,4) NOT NULL COMMENT '持有净值，每次买入卖出会动态变化',
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `operate_log`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '操作日志表';
 
 SELECT * FROM `operate_range`;
-SELECT * FROM `hold_funds`;
+SELECT COUNT(1) FROM `hold_funds`WHERE `fund_code` = '161121';
 SELECT * FROM `operate_log`;
 
 SELECT COUNT(1) FROM `operate_range`;

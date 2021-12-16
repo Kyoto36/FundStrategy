@@ -2,6 +2,7 @@ package com.ls.fundstrategy.contorller;
 
 import com.ls.fundstrategy.model.database.HoldFunds;
 import com.ls.fundstrategy.model.response.ApiResponse;
+import com.ls.fundstrategy.model.response.FundItem;
 import com.ls.fundstrategy.service.IHoldFundsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class HoldFundsController {
     private IHoldFundsService mHoldFundsService;
 
     @GetMapping("/getAll")
-    public ApiResponse<List<HoldFunds>> getAll(){
+    public ApiResponse<List<FundItem>> getAll(){
         return mHoldFundsService.getAll();
     }
 
@@ -29,7 +30,7 @@ public class HoldFundsController {
     public ApiResponse<Boolean> addFund(@RequestParam("fundName") String fundName,
                                         @RequestParam("fundCode") String fundCode,
                                         @RequestParam("holdCount") Double holdCount,
-                                        @RequestParam("currentValue") Double currentValue){
-        return mHoldFundsService.addFund(fundName, fundCode, holdCount, currentValue);
+                                        @RequestParam("initValue") Double initValue){
+        return mHoldFundsService.addFund(fundName, fundCode, holdCount, initValue);
     }
 }

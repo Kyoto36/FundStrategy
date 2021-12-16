@@ -2,6 +2,7 @@ package com.ls.fundstrategy.service;
 
 import com.ls.fundstrategy.model.database.HoldFunds;
 import com.ls.fundstrategy.model.response.ApiResponse;
+import com.ls.fundstrategy.model.response.FundItem;
 
 import java.util.List;
 
@@ -11,10 +12,10 @@ import java.util.List;
  * @desc
  */
 public interface IHoldFundsService {
-    ApiResponse<List<HoldFunds>> getAll();
+    ApiResponse<List<FundItem>> getAll();
 
     ApiResponse<Boolean> addFund(String fundName,
                                  String fundCode,
                                  Double holdCount,
-                                 Double currentValue);
+                                 Double initValue);
 }
