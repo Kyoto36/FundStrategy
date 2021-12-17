@@ -1,7 +1,9 @@
 package com.ls.fundstrategy.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ls.fundstrategy.dto.UserLoginDto;
 import com.ls.fundstrategy.model.database.User;
+import com.ls.fundstrategy.model.response.ApiResponse;
 
 import java.util.List;
 
@@ -20,4 +22,22 @@ public interface UserService extends IService<User> {
     boolean userNameIfExists(String userName);
 
     List<User> getUserByUserName(String userName);
+
+    /**
+     * <描述功能> 用户注册
+     * @author lang
+     * @date 22:18 2021/12/17
+     * @param user 用户实体
+     * @return com.ls.fundstrategy.model.response.ApiResponse<java.lang.Boolean>
+     **/
+    boolean registerUser(User user);
+
+    /**
+     * <描述功能> 用户登录
+     * @author lang
+     * @date 22:19 2021/12/17
+     * @param dto 登录用户实体
+     * @return com.ls.fundstrategy.model.response.ApiResponse<java.lang.String>
+     **/
+    String login(UserLoginDto dto);
 }

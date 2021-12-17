@@ -1,6 +1,7 @@
 package com.ls.fundstrategy.common.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 业务异常
@@ -8,6 +9,7 @@ import lombok.Data;
  * @date 2021-12-14 17:04:33
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = -778887391066124051L;

@@ -3,6 +3,7 @@ package com.ls.fundstrategy.contorller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.ls.fundstrategy.common.Context.BaseContextHandler;
 import com.ls.fundstrategy.common.annotation.SysLog;
 import com.ls.fundstrategy.common.constant.BusinessType;
 import com.ls.fundstrategy.common.constant.CommonStatus;
@@ -34,14 +35,7 @@ public class UserController {
     @SysLog(des = "用户登录", businessType = BusinessType.LOGIN)
     @PostMapping("login")
     public ApiResponse<String> login(@Validated @RequestBody(required = true) UserLoginDto dto){
-        final List<User> users = userService.getUserByUserName(dto.getUserName());
-        if(CollectionUtil.isEmpty(users)){
-            return ApiResponse.validateFail("用户名不存在");
-        }
-        if(!DigestUtil.sha256Hex(dto.getPassword()).equals(users.get(0).getPassword())){
-            return ApiResponse.validateFail("密码错误");
-        }
-        return ApiResponse.success("登录成功");
+        return ApiResponse.success(userService.login(dto));
     }
 
     /**
@@ -51,17 +45,8 @@ public class UserController {
      */
     @SysLog(des = "注册用户", businessType = BusinessType.INSERT)
     @PostMapping("register")
-    public ApiResponse<Boolean> save(@Validated @RequestBody(required = true)User user){
-        User userBean = new User();
-        if(userService.userNameIfExists(user.getUserName())){
-            return ApiResponse.validateFail("用户名已存在");
-        }
-        BeanUtil.copyProperties(user, userBean);
-        userBean.setCreateTime(LocalDateTime.now());
-        userBean.setUpdateTime(LocalDateTime.now());
-        userBean.setPassword(DigestUtil.sha256Hex(userBean.getPassword()));
-        userBean.setUserStatus(CommonStatus.NORMAL.getCode());
-        return ApiResponse.success(userService.save(userBean));
+    public ApiResponse<Boolean> register(@Validated @RequestBody(required = true)User user){
+        return ApiResponse.success(userService.registerUser(user));
     }
 
     /**
@@ -74,4 +59,5 @@ public class UserController {
     public ApiResponse<Boolean> checkUserName(@RequestParam("userName") String userName){
         return ApiResponse.success(userService.userNameIfExists(userName));
     }
+
 }
